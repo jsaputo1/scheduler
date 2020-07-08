@@ -4,7 +4,6 @@ import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import "components/Application.scss";
 
-
 const appointments = [
   {
     id: 1,
@@ -45,7 +44,6 @@ const appointments = [
 ];
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
   const [days, setDays] = useState([]);
 
   useEffect(() => {
@@ -69,6 +67,3 @@ export default function Application(props) {
   );
 }
 
-// const parsedCities = cities.map(city => <h3 onClick={() => setCurrentCity(city)}>{city ? city : "Reset"}</h3>)
-
-// <section className="schedule">{appointments.map((appointment) => appointment.id)}</section>
