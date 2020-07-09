@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-
+import "components/Application.scss";
 
 const appointments = [
   {
@@ -45,8 +44,13 @@ const appointments = [
 ];
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+  });
+  const setDay = (day) => setState({...state, day});
+  const setDays = (days) => setState((prev) => ({...prev, days}));
 
   useEffect(() => {
     axios.get("/api/days").then((response) => setDays(response.data));
@@ -60,7 +64,7 @@ export default function Application(props) {
         <img className="sidebar--centered" src="images/logo.png" alt="Interview Scheduler" />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList days={days} day={day} setDay={setDay} />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img className="sidebar__lhl sidebar--centered" src="images/lhl.png" alt="Lighthouse Labs" />
       </section>
@@ -68,7 +72,3 @@ export default function Application(props) {
     </main>
   );
 }
-
-// const parsedCities = cities.map(city => <h3 onClick={() => setCurrentCity(city)}>{city ? city : "Reset"}</h3>)
-
-// <section className="schedule">{appointments.map((appointment) => appointment.id)}</section>
