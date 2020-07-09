@@ -3,7 +3,7 @@ import axios from "axios";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import "components/Application.scss";
-const { getAppointmentsForDay } = require("../helpers/selectors");
+const { getAppointmentsForDay, getInterview } = require("../helpers/selectors");
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -21,7 +21,6 @@ export default function Application(props) {
     ])
       .then(
         (all) => {
-          console.log(all[2].data)
           setState((prev) => ({
             days: all[0].data,
             appointments: all[1].data,
@@ -32,7 +31,11 @@ export default function Application(props) {
   }, []);
 
   const appointments = getAppointmentsForDay(state, state.day);
-  const appointmentList = appointments.map((appointment) => <Appointment key={appointment.id} {...appointment} />);
+  
+  const appointmentList = appointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+    return <Appointment key={appointment.id} {...appointment} interview={interview} />
+  });
 
   return (
     <main className="layout">
@@ -40,11 +43,17 @@ export default function Application(props) {
         <img className="sidebar--centered" src="images/logo.png" alt="Interview Scheduler" />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList days={state.days} day={state.day} setDay={setDay} />
+          <DayList
+            days={state.days}
+            day={state.day}
+            setDay={setDay}
+          />
         </nav>
         <img className="sidebar__lhl sidebar--centered" src="images/lhl.png" alt="Lighthouse Labs" />
       </section>
-      <section className="schedule">{appointmentList}</section>
+      <section className="schedule">
+        {appointmentList}
+      </section>
     </main>
   );
 }
