@@ -3,6 +3,7 @@ import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
 import Status from "components/Appointment/Status";
+import Confirm from "components/Appointment/Confirm";
 import useVisualMode from "hooks/useVisualMode";
 import "components/Appointment/styles.scss";
 import Form from "./Form";
@@ -12,6 +13,8 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
 
 export default function Appointment(props) {
   function save(name, interviewer) {
@@ -24,6 +27,10 @@ export default function Appointment(props) {
       .then(() => {
         transition(SHOW);
       })
+  }
+
+  function confirm() {
+    transition(CONFIRM)
   }
 
   function destroy() {
@@ -44,11 +51,12 @@ export default function Appointment(props) {
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message="Saving" />}
       {mode === DELETING && <Status message="DELETING" />}
+      {mode === CONFIRM && <Confirm message="Delete the appointment?" onCancel={() => back()} onConfirm={() => destroy()} />}
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onDelete={destroy}
+          onDelete={confirm}
         />
       )}
       {mode === CREATE && (
