@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
-import { getAppointmentsByDay } from "helpers/selectors";
+import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function useApplicationData() {
 
@@ -25,6 +25,7 @@ export default function useApplicationData() {
     };
     return axios.put(`api/appointments/${id}`, appointments[id])
       .then(() => {
+        spotsRemaining(id, -1)
         setState({
           ...state,
           appointments
@@ -43,6 +44,7 @@ export default function useApplicationData() {
     };
     return axios.delete(`api/appointments/${id}`, appointments[id])
       .then(() => {
+        spotsRemaining(id, +1)
         setState({
           ...state,
           appointments
@@ -65,6 +67,17 @@ export default function useApplicationData() {
         }
       );
   }, []);
+
+  const spotsRemaining = (id, increaseBy) => {
+    state.days.map(day => {
+      if(day.appointments.includes(id)) {
+          day.spots += increaseBy
+      }
+    })
+  }
+    
+
+
 
   return { state, setDay, bookInterview, cancelInterview };
 }
