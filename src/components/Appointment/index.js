@@ -1,10 +1,9 @@
 import React, { Fragment, useEffect } from "react";
-import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
 import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
-import Error from "components/Appointment/Error"
+import Error from "components/Appointment/Error";
 import useVisualMode from "hooks/useVisualMode";
 import "components/Appointment/styles.scss";
 import Form from "./Form";
@@ -35,7 +34,7 @@ export default function Appointment(props) {
   }
 
   function confirm() {
-    transition(CONFIRM)
+    transition(CONFIRM);
   }
 
   function destroy() {
@@ -48,7 +47,7 @@ export default function Appointment(props) {
       .catch(error => transition(ERROR_DELETE, true));
   }
   function edit() {
-    transition(EDIT)
+    transition(EDIT);
   }
 
   const { mode, transition, back } = useVisualMode(
