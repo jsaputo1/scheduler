@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
-import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function useApplicationData() {
 
@@ -14,6 +12,13 @@ export default function useApplicationData() {
 
   const setDay = (day) => setState({ ...state, day });
 
+  const spotsRemaining = (id, increaseBy) => {
+    for (let day of state.days)
+      if (day.appointments.includes(id)) {
+        day.spots += increaseBy;
+      }
+  };
+
   const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
@@ -25,13 +30,13 @@ export default function useApplicationData() {
     };
     return axios.put(`api/appointments/${id}`, appointments[id])
       .then(() => {
-        spotsRemaining(id, -1)
+        spotsRemaining(id, -1);
         setState({
           ...state,
           appointments
         });
-      })
-  }
+      });
+  };
 
   const cancelInterview = (id) => {
     const appointment = {
@@ -44,13 +49,13 @@ export default function useApplicationData() {
     };
     return axios.delete(`api/appointments/${id}`, appointments[id])
       .then(() => {
-        spotsRemaining(id, +1)
+        spotsRemaining(id, +1);
         setState({
           ...state,
           appointments
         });
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     Promise.all([Promise.resolve(axios.get("/api/days")),
@@ -67,17 +72,6 @@ export default function useApplicationData() {
         }
       );
   }, []);
-
-  const spotsRemaining = (id, increaseBy) => {
-    state.days.map(day => {
-      if(day.appointments.includes(id)) {
-          day.spots += increaseBy
-      }
-    })
-  }
-    
-
-
 
   return { state, setDay, bookInterview, cancelInterview };
 }
