@@ -28,7 +28,7 @@ import Application from "components/Application";
 
 afterEach(cleanup);
 
-it("defaults to Monday and changes the schedule when a new day is selected", () => {
+xit("defaults to Monday and changes the schedule when a new day is selected", () => {
   const { getByText } = render(<Application />);
 
   return waitForElement(() => getByText("Monday")).then(() => {
@@ -39,18 +39,8 @@ it("defaults to Monday and changes the schedule when a new day is selected", () 
 
 
 it("loads data, books an interview and reduces the spots remaining for Monday by 1", async () => {
-
-
   const { container } = render(<Application />);
-  setTimeout('', 5000);
-
-
-
-
-
   await waitForElement(() => getByText(container, "Archie Cohen"));
-  // await waitForElement(() => getByText(container, "Monday"));;
-  // console.log(container);
 
   const appointments = getAllByTestId(container, "appointment");
   const appointment = appointments[0];
