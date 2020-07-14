@@ -25,11 +25,11 @@ export default function Application(props) {
       interviewers={interviewers}
       bookInterview={bookInterview}
       cancelInterview={cancelInterview}
-    />
+    />;
   });
 
   return (
-    <main className="layout">
+    <main className="layout" data-testid="appointment">
       <section className="sidebar">
         <img className="sidebar--centered" src="images/logo.png" alt="Interview Scheduler" />
         <hr className="sidebar__separator sidebar--centered" />
