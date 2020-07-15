@@ -47,8 +47,7 @@ export default function useApplicationData() {
       }
     });
     return axios.put(`api/appointments/${id}`, appointment)
-      .then((response) => {
-        console.log("response", response);
+      .then(() => {
         spotsRemaining(state.day, days, appointments);
         setState({
           ...state,
