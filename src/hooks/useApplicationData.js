@@ -12,14 +12,24 @@ export default function useApplicationData() {
 
   const setDay = (day) => setState({ ...state, day });
 
-  const spotsRemaining = (id, increaseBy) => {
-    for (let day of state.days)
-      if (day.appointments.includes(id)) {
-        day.spots += increaseBy;
+  function spotsRemaining(day, days, appointments) {
+    let bookedSpots = 0;
+    let totalSpots = 0;
+    days.forEach(i => {
+      totalSpots++;
+      if (i.name === day) {
+        i.appointments.forEach(j => {
+          if (appointments[j].interview !== null) {
+            bookedSpots++;
+          }
+        });
       }
-  };
+    });
+    return totalSpots - bookedSpots;
+  }
 
   const bookInterview = (id, interview) => {
+
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -28,9 +38,18 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    return axios.put(`api/appointments/${id}`, appointments[id])
-      .then(() => {
-        spotsRemaining(id, -1);
+    const days = state.days.map(day => {
+      if (state.day === day.name) {
+        day.spots = spotsRemaining(state.day, state.days, appointments);
+        return day;
+      } else {
+        return day;
+      }
+    });
+    return axios.put(`api/appointments/${id}`, appointment)
+      .then((response) => {
+        console.log("response", response);
+        spotsRemaining(state.day, days, appointments);
         setState({
           ...state,
           appointments
@@ -47,10 +66,18 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const days = state.days.map(day => {
+      if (state.day === day.name) {
+        day.spots = spotsRemaining(state.day, state.days, appointments);
+        return day;
+      } else {
+        return day;
+      }
+    });
     return axios.delete(`api/appointments/${id}`, appointments[id])
       .then(
         () => {
-          spotsRemaining(id, +1);
+          spotsRemaining(state.days, days, appointments);
           setState({
             ...state,
             appointments
@@ -77,7 +104,7 @@ export default function useApplicationData() {
   }, []);
 
   return { state, setDay, bookInterview, cancelInterview };
-}
+};
 
 
 
