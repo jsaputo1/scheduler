@@ -2,6 +2,9 @@
 
 The Interview Scheduler is a single page web app built with React that allows users to book, edit and cancel interviews. 
 
+## Link to live site
+[https://johnsaputo.net/scheduler/](https://johnsaputo.net/scheduler/)
+
 ## Main view
 
 <p align="center">
