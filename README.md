@@ -50,7 +50,14 @@ The client application and the API server application must run concurrently. To 
 
 ## Setup
 
-Install dependencies with `npm install`. Start the webpack server with "npm start".
+Install dependencies with `npm install`. Start the webpack server with "npm start". Dependencies include - 
+
+- axios
+- classnames
+- normalize.css
+- react
+- react-dom
+- react-scripts
 
 ## Running Webpack Development Server
 
