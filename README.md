@@ -46,6 +46,8 @@ React, Sass, PostgreSQL, Node, Storybook, Jest, Cypress
 
 ## Installation Instructions
 
+The client application and the API server application must run concurrently. To run the API server fork and download the [https://github.com/lighthouse-labs/scheduler-api](Scheduler-API)
+
 ## Setup
 
 Install dependencies with `npm install`. Start the webpack server with "npm start".
